@@ -1,0 +1,9 @@
+# CMake related
+cmake-build-debug/
+
+# GIT related
+.git/
+
+# IDE
+## CLion related
+.idea/
