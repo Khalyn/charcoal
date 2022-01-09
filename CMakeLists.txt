@@ -5,6 +5,7 @@ set( CMAKE_CXX_STANDARD 23 )
 
 add_executable( charcoal
 	main.cpp
+	charcoal/core/boolean.hpp
 )
 
 if ( MSVC )
