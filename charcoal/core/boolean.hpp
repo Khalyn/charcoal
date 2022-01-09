@@ -30,6 +30,6 @@ namespace charcoal
 		static_assert( sizeof( boolean ) == sizeof( bool ) );
 		static_assert( True );
 		static_assert( not False );
-	}; // namespace tests_ct
+	}; // inline namespace tests_ct
 
 }; // namespace charcoal
