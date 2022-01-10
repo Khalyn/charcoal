@@ -1,6 +1,8 @@
+#pragma once
+
 #define WIN32_LEAN_AND_MEAN // Avoid including some not-used headers in windows.h
-#include <windows.h>
-#include <winuser.h>
+#include <Windows.h>
+#include <Winuser.h>
 
 #include "charcoal/core/primitives_types.hpp"
 using namespace charcoal;
@@ -53,8 +55,22 @@ enum class MessageBoxSettings : u32::inner_type
 };
 DEFINE_ENUM_FLAG_OPERATORS( MessageBoxSettings );
 
+enum class MessageBoxResult
+{
+	IDOk	= IDOK,
+	IDYes	= IDYES,
+	IDNo	= IDNO,
+	IDAbort = IDABORT,
+	IDContinue	= IDCONTINUE,
+	IDCancel	= IDCANCEL,
+	IDIgnore	= IDIGNORE,
+	IDTryAgain	= IDTRYAGAIN,
+	IDRetry		= IDRETRY
+};
+
 struct MessageBoxContent
 {
+	HWND				ownerHandle;
 	MessageBoxIcon		icon;
 	MessageBoxAction	action;
 	MessageBoxDefButton defButton;
@@ -64,7 +80,8 @@ struct MessageBoxContent
 	LPCSTR				body;
 };
 
-inline auto message_box( MessageBoxContent const &content ) -> i32
+
+inline auto message_box( MessageBoxContent const &content ) -> MessageBoxResult
 {
 	u32 const type( (uint32_t)content.action
 		| (uint32_t)content.icon
@@ -73,26 +90,10 @@ inline auto message_box( MessageBoxContent const &content ) -> i32
 		| (uint32_t)content.settings
 	);
 
-	return i32( ::MessageBoxA(
-		nullptr,
+	return MessageBoxResult( ::MessageBoxA(
+		content.ownerHandle,
 		content.body,
 		content.title,
 		type.as_inner()
 	) );
-}
-
-
-int main()
-{
-	MessageBoxContent content {};
-	content.icon = MessageBoxIcon::Information;
-	content.action = MessageBoxAction::YesNoCancel;
-	content.defButton = MessageBoxDefButton::Button2;
-	content.modality = MessageBoxModality::Application;
-	content.settings = MessageBoxSettings::TopMost | MessageBoxSettings::RightJustified;
-	content.title = "Title";
-	content.body = "Do you really want to continue ?\n(Your choice doesn't really matter anyway)";
-	message_box( content );
-
-    return 0;
 }

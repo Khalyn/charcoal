@@ -2,7 +2,8 @@
 
 #include <cstdint>
 
-#include "boolean.hpp"
+#include "charcoal/core/boolean.hpp"
+#include "charcoal/core/concepts_cast.hpp"
 
 namespace charcoal
 {
@@ -18,7 +19,7 @@ namespace charcoal
 			static inline constexpr inner_type BYTES = sizeof( inner_type );
 
 			// constructors
-			explicit constexpr PrimitiveType( T const &value )
+			constexpr explicit PrimitiveType( T const &value )
 				: m_data( value )
 			{};
 
@@ -48,10 +49,25 @@ namespace charcoal
 				return m_data != rhs.m_data;
 			}
 
-			// TODO methods
-			inline constexpr auto as_inner() const noexcept -> inner_type
+			// methods
+			[[nodiscard]] inline constexpr auto as_inner() const noexcept -> inner_type
 			{
 				return m_data;
+			}
+
+
+			template<AllowStaticCast<inner_type> Wanted>
+			[[nodiscard]] inline constexpr auto as() const noexcept -> Wanted
+			{
+				return static_cast<Wanted>( m_data );
+			}
+
+			template<AllowUnsafeStaticCast<inner_type> Wanted>
+			[[nodiscard]] inline constexpr auto as_unsafe() const noexcept -> Wanted
+			{
+#pragma warning( disable: 4244 ) // Disable the warning : conversion from 'X' to 'Y', possible loss of data
+				return static_cast<Wanted>( m_data );
+#pragma warning( default: 4244 )
 			}
 
 		private:
@@ -79,6 +95,17 @@ namespace charcoal
 	{
 		static_assert( u8( 6 ) == 6 );
 		static_assert( u8::BYTES == sizeof( uint8_t) );
+
+		consteval bool compile_time_casts()
+		{
+			u8 const a( 128 );
+			u16 const fromA = a.as<u16>();
+			u8 const fromFromA = fromA.as_unsafe<u8>(); // as doesn't compile here
+			i8 const b = fromFromA.as_unsafe<i8>(); // as doesn't compile here
+			return true;
+		}
+
+		static_assert( compile_time_casts() );
 		//TODO Better compile-time tests
 	} // inline namespace tests_ct
 

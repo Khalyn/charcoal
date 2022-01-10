@@ -3,10 +3,11 @@ project( charcoal )
 
 set( CMAKE_CXX_STANDARD 23 )
 
+include_directories( . )
+
 add_executable( charcoal
-	main.cpp
-	charcoal/core/boolean.hpp
-	charcoal/core/primitives_types.hpp )
+	src/main.cpp
+	)
 
 if ( MSVC )
 	#[[ https://docs.microsoft.com/en-us/cpp/build/reference/compiler-options-listed-by-category?view=msvc-170 ]]
