@@ -83,6 +83,7 @@ struct MessageBoxContent
 
 inline auto message_box( MessageBoxContent const &content ) -> MessageBoxResult
 {
+	//TODO improve these casts.
 	u32 const type( (uint32_t)content.action
 		| (uint32_t)content.icon
 		| (uint32_t)content.defButton

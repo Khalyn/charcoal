@@ -26,6 +26,7 @@ namespace charcoal
 			PrimitiveType( type const &value ) = default;
 
 			// operators overload
+			// TODO give some love to these override.
 			explicit constexpr operator inner_type() const { return m_data; }
 
 			[[nodiscard]] constexpr auto operator ==( inner_type const &rhs ) const -> boolean
@@ -49,6 +50,32 @@ namespace charcoal
 				return m_data != rhs.m_data;
 			}
 
+			[[nodiscard]] constexpr auto operator -( inner_type const &rhs ) const -> inner_type
+			{
+				return m_data - rhs;
+			}
+			[[nodiscard]] constexpr auto operator -( type const &rhs ) const -> type
+			{
+				return type( m_data - rhs.m_data );
+			}
+
+			[[nodiscard]] constexpr auto operator +( inner_type const &rhs ) const -> inner_type
+			{
+				return m_data + rhs;
+			}
+			[[nodiscard]] constexpr auto operator +( type const &rhs ) const -> type
+			{
+				return type( m_data + rhs.m_data );
+			}
+
+			[[nodiscard]] constexpr auto operator *( inner_type const &rhs ) const -> inner_type
+			{
+				return m_data * rhs;
+			}
+			[[nodiscard]] constexpr auto operator *( type const &rhs ) const -> type
+			{
+				return type( m_data * rhs.m_data );
+			}
 			// methods
 			[[nodiscard]] inline constexpr auto as_inner() const noexcept -> inner_type
 			{
@@ -70,7 +97,7 @@ namespace charcoal
 #pragma warning( default: 4244 )
 			}
 
-		private:
+		protected:
 			inner_type m_data;
 		};
 	} // namespace impl

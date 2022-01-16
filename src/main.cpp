@@ -1,4 +1,8 @@
+#include <iostream>
+
 #include "message_box.hpp"
+#include "temperature.hpp"
+
 
 void display_msgbox_example()
 {
@@ -15,8 +19,19 @@ void display_msgbox_example()
 }
 
 
+template<CTemperature T>
+constexpr void display_current_temperature( T const &temperature )
+{
+	printf( "Temperature: %.2f%s\n", temperature.as_inner(), T::UNIT );
+}
+
 int main()
 {
+	constexpr Celsius celsius( 15.0f );
+	constexpr Fahrenheit fahrenheit = celsius_to_fahrenheit( celsius );
+	display_current_temperature( fahrenheit );
+	display_current_temperature( celsius );
+
 	display_msgbox_example();
     return 0;
 }
