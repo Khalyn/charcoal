@@ -15,5 +15,5 @@ requires ( From value )
 // Defining a concept that can only allow the static_cast operation when it's safe to use it.
 template<typename Wanted, typename From> concept AllowStaticCast =
 	AllowUnsafeStaticCast<Wanted, From> and
-	sizeof( Wanted ) > sizeof( From ) or ( sizeof( Wanted ) == sizeof( From ) and std::is_unsigned_v<Wanted> );
+    ( sizeof( Wanted ) > sizeof( From ) or ( sizeof( Wanted ) == sizeof( From ) and std::is_unsigned_v<Wanted> ) );
 

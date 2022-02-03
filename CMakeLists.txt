@@ -19,6 +19,13 @@ if ( MSVC )
 		PRIVATE "/W4"
 		# PRIVATE "/WX" #[[ Treat warning as an error, but overkill for the moment ]]
 	)
+elseif( MINGW )
+	target_compile_options( charcoal
+		BEFORE
+		PRIVATE "-std=c++2b"
+		PRIVATE "-Wall"
+		PRIVATE "-Wextra"
+	)
 else()
-	message( SEND_ERROR "This project is only configured with MSVC for the moment." )
+	message( SEND_ERROR "This project is not configured for this compiler." )
 endif()
